@@ -64,8 +64,8 @@ void setup( )
  */
 static bool measure_environment( float *temperature, float *humidity ) {
   static unsigned long measurement_timestamp = millis( );
-  /* Measure once every four seconds. */
-  if( millis( ) - measurement_timestamp > 3000ul )
+  /* Measure once every sixty seconds. */
+  if( millis( ) - measurement_timestamp > 60000ul )
   {
     if( dht_sensor.measure( temperature, humidity ) == true )
     {
@@ -80,6 +80,7 @@ static bool measure_environment( float *temperature, float *humidity ) {
 /* ======================================LOOPz========================== */
 void loop( )
 {
+  
   //exit(0);
   float temperature;
   float humidity;
