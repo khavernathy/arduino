@@ -104,6 +104,7 @@ void loop( )
       // TIME
       dt = clock.getDateTime();
       // For leading zero look to DS3231_dateformat example
+      
       Serial.print(dt.year);   Serial.print("-");          
       Serial.print(dt.month); Serial.print("-");
       Serial.print(dt.day);    Serial.print(" ");
@@ -129,13 +130,13 @@ void loop( )
       tempK =  1 / (0.001129148 + (0.000234125 + (0.0000000876741 * tempK * tempK )) * tempK );
       float tempC = tempK - 273.15;
       float tempF = (tempC * 9.0)/ 5.0 + 32.0;
-      Serial.print(" "); Serial.print(tempF); 
-
+      Serial.print(" "); Serial.print(tempF); Serial.print(" "); //Serial.print("\n"); 
+      
       // WATERPROOF TEMPERATURE
       dTemp.requestTemperatures();
-      Serial.println(" " + String(dTemp.getTempFByIndex(0))); // Get the first temperature for waterproof probe.
-
-      // Serial.println("");
+      Serial.println(dTemp.getTempFByIndex(0)); // Get the first temperature for waterproof probe.
+      
+      // Serial.println(""); 
     /* ========================================= */
   }
   /* SOUND
