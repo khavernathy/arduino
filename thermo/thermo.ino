@@ -105,13 +105,16 @@ void loop( )
       dt = clock.getDateTime();
       // For leading zero look to DS3231_dateformat example
       
+      /*
       Serial.print(dt.year);   Serial.print("-");          
       Serial.print(dt.month); Serial.print("-");
       Serial.print(dt.day);    Serial.print(" ");
       Serial.print(dt.hour);   Serial.print(":");
       Serial.print(dt.minute); Serial.print(":");
       Serial.print(dt.second); Serial.print(" ");
-  
+      */
+      Serial.print(dt.unixtime); Serial.print(" ");
+      
       // TEMPERATURE, HUMIDITY
       Serial.print( " " );
       Tf = temperature*(9./5.)+32.;
@@ -134,7 +137,7 @@ void loop( )
       
       // WATERPROOF TEMPERATURE
       dTemp.requestTemperatures();
-      Serial.println(dTemp.getTempFByIndex(0)); // Get the first temperature for waterproof probe.
+      Serial.print(dTemp.getTempFByIndex(0)); Serial.print("\n");// Get the first temperature for waterproof probe.
       
       // Serial.println(""); 
     /* ========================================= */
