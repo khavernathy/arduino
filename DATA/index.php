@@ -19,10 +19,10 @@ date_default_timezone_set('America/New_York');
 		<img src="TH.png?<?php echo $stp; ?>" /> &nbsp;&nbsp;&nbsp;
 		<img src="LH.png?<?php echo $stp; ?>" />
 	<br />
-		<img src="T3_HISTO.png?<?php echo $stp; ?>" /> &nbsp; &nbsp; &nbsp;
-		<img src="LIGHT_HISTO.png?<?php echo $stp; ?>" />
+		<img src="HISTO_T3.png?<?php echo $stp; ?>" /> &nbsp; &nbsp; &nbsp;
+		<img src="HISTO_LIGHT.png?<?php echo $stp; ?>" />
 	<br />
-		<img src="RH_HISTO.png?<?php echo $stp; ?>" />&nbsp; &nbsp;&nbsp;
+		<img src="HISTO_RH.png?<?php echo $stp; ?>" />&nbsp; &nbsp;&nbsp;
 
 	</body>
 
