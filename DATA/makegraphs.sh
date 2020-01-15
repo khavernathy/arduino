@@ -8,9 +8,9 @@
 while [ 1 ]; do
 	export DISPLAY=:0
 	python="/usr/bin/python3.6"
-	$python timegraph.py T3.png     T3_*.dat
-	$python timegraph.py LIGHT.png  LIGHT_*.dat
-	$python timegraph.py RH.png     RH_*.dat
+	$python timegraph.py T3.png    "date" "temp (F)"      T3_*.dat
+	$python timegraph.py LIGHT.png "date" "LIGHT"         LIGHT_*.dat
+	$python timegraph.py RH.png    "date" "Rel Hum %"     RH_*.dat
 
 
 	[ -f t ] && rm t;
@@ -34,9 +34,9 @@ while [ 1 ]; do
 	paste l h > lh;
 	rm l t h;
 	python="/usr/bin/python3.6"
-	$python coorelations.py TL.png tl
-	$python coorelations.py TH.png th
-	$python coorelations.py LH.png lh
+	$python correlations.py TL.png "temp (F)" "LIGHT" tl
+	$python correlations.py TH.png "temp (F)" "Rel Hum %" th
+	$python correlations.py LH.png "LIGHT" "Rel Hum %" lh
 
 	rm tl th lh;
 
