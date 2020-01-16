@@ -24,29 +24,18 @@ for i in np.arange(4,n,1):
     data = np.loadtxt( sys.argv[i] )
 
     if (np.size(data) / len(data) == 2):
-        hi = np.histogram2d( data[:,0], data[:,1], bins=15 ) 
+        nbin = 25
+        hi = np.histogram2d( data[:,0], data[:,1], bins=nbin ) 
         first =  np.array( hi[0] )
         second = np.array(  hi[1] )
         third =  np.array( hi[2] )
-        first = np.insert( first, 0, np.array( [np.zeros(15)] ), axis=0) 
+        first = np.insert( first, 0, np.array( [np.zeros(nbin)] ), axis=0) 
         #first[0] = np.insert( first[0], 0, 0, axis=0)
 
         plt.show()
         a = len(first)
         b = len(second)
         c = len(third)
-        """
-        print( a,b,c )
-        for i in np.arange(0, a, 1):
-            print("hi0", i, first[i])
-        print("")
-        for k in np.arange(0,b,1):
-            print("hi1", k, second[k])
-        print("")
-        for k in np.arange(0,c,1):
-            print("hi2",k, third[k])
-        """
-
         nx = []
         ny = []
         nz = []
@@ -77,7 +66,8 @@ for i in np.arange(4,n,1):
         #print( nx.size, ny.size, nz.size)
         ax.set_zlabel('log10(count)');
     else:
-        hi = np.histogram(data, bins=50)
+        nbin=50
+        hi = np.histogram(data, bins=nbin)
         first = np.array( hi[0] )
         second = np.array( hi[1] )
         first = np.insert( first, 0, 0, axis=0) # prepend a 0
