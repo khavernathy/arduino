@@ -10,19 +10,24 @@ date_default_timezone_set('America/New_York');
 
 	<body>
 	<h3 style="color:#fff;">Melbourne, FL data; loaded <?php echo date('m.d.Y H:i:s'); ?></h3>
-		<img src="T3.png?<?php echo $stp; ?>" /> &nbsp;&nbsp;&nbsp;
+		<img src="T3.png?<?php echo $stp; ?>" />&nbsp;&nbsp;&nbsp;
 		<img src="LIGHT.png?<?php echo $stp; ?>" />
 	<br />
-		<img src="RH.png?<?php echo $stp; ?>" /> &nbsp;&nbsp;&nbsp;
+		<img src="RH.png?<?php echo $stp; ?>" />&nbsp;&nbsp;&nbsp;
 		<img src="TL.png?<?php echo $stp; ?>" />
 	<br />
-		<img src="TH.png?<?php echo $stp; ?>" /> &nbsp;&nbsp;&nbsp;
+		<img src="TH.png?<?php echo $stp; ?>" />&nbsp;&nbsp;&nbsp;
 		<img src="LH.png?<?php echo $stp; ?>" />
 	<br />
-		<img src="HISTO_T3.png?<?php echo $stp; ?>" /> &nbsp; &nbsp; &nbsp;
+		<img src="HISTO_T3.png?<?php echo $stp; ?>" /> &nbsp;&nbsp;&nbsp;
 		<img src="HISTO_LIGHT.png?<?php echo $stp; ?>" />
 	<br />
-		<img src="HISTO_RH.png?<?php echo $stp; ?>" />&nbsp; &nbsp;&nbsp;
+		<img src="HISTO_RH.png?<?php echo $stp; ?>" />&nbsp;&nbsp;&nbsp;
+		<img src="HISTO2D_TL.png?<?php echo $stp; ?>" />
+	<br />
+		<img src="HISTO2D_TH.png?<?php echo $stp; ?>" />&nbsp;&nbsp;&nbsp;
+		<img src="HISTO2D_LH.png?<?php echo $stp; ?>" />
+	<br />
 
 	</body>
 

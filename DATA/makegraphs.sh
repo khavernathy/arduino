@@ -39,10 +39,12 @@ while [ 1 ]; do
 	$python correlations.py TH.png "temp (F)" "Rel Hum %" th
 	$python correlations.py LH.png "LIGHT" "Rel Hum %" lh
 
-	rm tl th lh;
-
-
 	# HISTOGRAMS
+	cat tl | awk {'print $2,$1'} > lt
+	$python histograms.py HISTO2D_TL.png "LIGHT" "temp (F)" lt
+	$python histograms.py HISTO2D_TH.png "temp (F)" "Rel Hum %" th
+	$python histograms.py HISTO2D_LH.png "LIGHT" "Rel Hum %" lh
+	rm tl lt    th lh;
 	$python histograms.py  HISTO_T3.png  "Temperature (F)" "count" t
 	$python histograms.py HISTO_LIGHT.png "Light" "count" l
 	$python histograms.py HISTO_RH.png "RH" "count" h
