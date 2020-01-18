@@ -5,51 +5,84 @@
 #xmgrace -hdevice PNG -hardcopy -printfile LIGHT.png    LIGHT_*.dat
 #xmgrace -hdevice PNG -hardcopy -printfile RH.png    RH_*.dat 
 
+# IDs
+# T1:       temperature, RH sensor
+# RH:       rel humidity, RH sensor
+# LIGHT:    light sensor
+# T2:       temperature, thermistor
+# T3:       temperature, waterproof probe
+
+# list of output pngs
+#	T.png  	-- thermistor and waterproof temps over time
+# 	LIGHT.png	-- light over time
+#	TL.png		-- thermistor temp + light correlation
+# 	HISTO2D_TL.png	-- thermistor temp + light 2D histogram
+#	HISTO_T.png	-- thermistor and waterproof probe 1D histogram
+# 	HISTO_LIGHT.png -- light 1D histogram
+
 while [ 1 ]; do
 	# TIME FUNCTIONS
 	export DISPLAY=:0
 	python="/usr/bin/python3.6"
-	$python timegraph.py T3.png    "date" "temp (F)"      T3_*.dat
-	$python timegraph.py LIGHT.png "date" "LIGHT"         LIGHT_*.dat
-	$python timegraph.py RH.png    "date" "Rel Hum %"     RH_*.dat
-
+	[ -f thermistor ] && rm thermistor
+	touch thermistor
+	for x in ./T2_*.dat; do
+		cat "$x" >> thermistor
+	done
+	[ -f waterproof ] && rm waterproof
+	touch waterproof
+	for x in ./T3_*.dat; do
+		cat "$x" >> waterproof
+	done
+	[ -f light ] && rm light
+	touch light
+	for x in ./LIGHT_*.dat; do
+		cat "$x" >> light
+	done
+	$python timegraph.py T.png     "date" "temp (F)"      waterproof thermistor
+	$python timegraph.py LIGHT.png "date" "LIGHT"         light
+#	$python timegraph.py RH.png    "date" "Rel Hum %"     RH_*.dat
 
 	# CORRELATIONS
-	[ -f t ] && rm t;
-	touch t;
+	[ -f thermistor ] && rm thermistor;
+	touch thermistor
+	for x in ./T2_*; do
+		cat "$x" | awk {'print $2'} >> thermistor
+	done
+	[ -f waterproof ] && rm waterproof;
+	touch waterproof;
 	for x in ./T3_*; do
-		cat "$x" | awk {'print $2'} >> t
+		cat "$x" | awk {'print $2'} >> waterproof
 	done
-	[ -f l ] && rm l;
-	touch l;
+	[ -f light ] && rm light;
+	touch light;
 	for x in ./LIGHT_*; do
-		cat "$x" | awk {'print $2'} >> l
+		cat "$x" | awk {'print log($2)'} >> light
 	done
-	[ -f h ] && rm h;
-	touch h;
-	for x in ./RH_*; do
-		cat "$x" | awk {'print $2'} >> h
-	done
+#	[ -f h ] && rm h;
+#	touch h;
+#	for x in ./RH_*; do
+#		cat "$x" | awk {'print $2'} >> h
+#	done
 
-	paste t l > tl;
-	paste t h > th;
-	paste l h > lh;
-	python="/usr/bin/python3.6"
-	$python correlations.py TL.png "temp (F)" "LIGHT" tl
-	$python correlations.py TH.png "temp (F)" "Rel Hum %" th
-	$python correlations.py LH.png "LIGHT" "Rel Hum %" lh
+	paste thermistor light > air-temp_light_corr;
+#	paste t h > th;
+#	paste l h > lh;
+	$python correlations.py TL.png "temp (F)" "log( light )" air-temp_light_corr
+#	$python correlations.py TH.png "temp (F)" "Rel Hum %" th
+#	$python correlations.py LH.png "LIGHT" "Rel Hum %" lh
 
 	# HISTOGRAMS
-	cat tl | awk {'print $2,$1'} > lt
-	$python histograms.py HISTO2D_TL.png "LIGHT" "temp (F)" lt
-	$python histograms.py HISTO2D_TH.png "temp (F)" "Rel Hum %" th
-	$python histograms.py HISTO2D_LH.png "LIGHT" "Rel Hum %" lh
-	rm tl lt    th lh;
-	$python histograms.py  HISTO_T3.png  "Temperature (F)" "count" t
-	$python histograms.py HISTO_LIGHT.png "Light" "count" l
-	$python histograms.py HISTO_RH.png "RH" "count" h
+	cat air-temp_light_corr | awk {'print $2,$1'} > lt
+	$python histograms.py HISTO2D_TL.png "log( light )" "temp (F)" lt
+#	$python histograms.py HISTO2D_TH.png "temp (F)" "Rel Hum %" th
+#	$python histograms.py HISTO2D_LH.png "LIGHT" "Rel Hum %" lh
+	$python histograms.py  HISTO_T.png  "Temperature (F)" "count"  waterproof thermistor
+	$python histograms.py  HISTO_LIGHT.png "log( light )" "log10( count )" light
+#	$python histograms.py HISTO_RH.png "RH" "count" h
 
-	rm t l h
-
+	rm lt   # th lh;
+	rm light # h
+	rm thermistor waterproof light  air-temp_light_corr
 	sleep 60;
 done
