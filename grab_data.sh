@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# IDs
+# T1:       temperature, RH sensor
+# RH:       rel humidity, RH sensor
+# LIGHT:    light sensor
+# T2:       temperature, thermistor
+# T3:       temperature, waterproof probe
+
 while [ 1 ]; do
 
     scp sci:~/arduino/output_* .
