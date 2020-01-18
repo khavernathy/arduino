@@ -81,8 +81,6 @@ while [ 1 ]; do
 	$python histograms.py  HISTO_LIGHT.png "log( light )" "log10( count )" light
 #	$python histograms.py HISTO_RH.png "RH" "count" h
 
-	rm lt   # th lh;
-	rm light # h
-	rm thermistor waterproof light  air-temp_light_corr
+	rm lt light thermistor waterproof  air-temp_light_corr
 	sleep 60;
 done
