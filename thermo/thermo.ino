@@ -37,6 +37,13 @@ int tempPin = 1;
 OneWire oneWire(7); // Digital Pin 7
 DallasTemperature dTemp(&oneWire);
 
+// column output
+// 1: timestamp unix
+// 2: temperature, RH sensor
+// 3: humidity, RH sensor
+// 4: light reading
+// 5: temperature, thermistor
+// 6: temperature, waterproof probe
 
 /* ====================== SETUP ===================== */
 void setup( )
@@ -65,7 +72,7 @@ void setup( )
 static bool measure_environment( float *temperature, float *humidity ) {
   static unsigned long measurement_timestamp = millis( );
   /* Measure once every sixty seconds. */
-  if( millis( ) - measurement_timestamp > 60000ul )
+  if( millis( ) - measurement_timestamp > 1000ul )
   {
     if( dht_sensor.measure( temperature, humidity ) == true )
     {
@@ -87,8 +94,8 @@ void loop( )
   float Tf ;
   /* Measure temperature and humidity.  If the functions returns
      true, then a measurement is available. */
-  if( measure_environment( &temperature, &humidity ) == true )
-  {
+  //if( measure_environment( &temperature, &humidity ) == true )
+  //{
       /*
        *       
       char helper[2];
@@ -119,8 +126,9 @@ void loop( )
       // TEMPERATURE, HUMIDITY
       Serial.print( " " );
       Tf = temperature*(9./5.)+32.;
-      Serial.print(Tf); Serial.print(" " );
-      Serial.print( humidity, 1 );
+      Serial.print(0);   // Tf );
+      Serial.print(" " );
+      Serial.print( 0); // humidity, 1 );
       Serial.print( " " );
 
       // LIGHT
@@ -140,9 +148,12 @@ void loop( )
       dTemp.requestTemperatures();
       Serial.print(dTemp.getTempFByIndex(0)); Serial.print("\n");// Get the first temperature for waterproof probe.
       
+      delay(60000);
       // Serial.println(""); 
     /* ========================================= */
-  }
+ // } else {
+ //  Serial.println("Failed to get temp/humidity."); 
+ // }
   /* SOUND
   analogValue = analogRead(sensorAnalogPin);
   digitalValue = digitalRead(sensorDigitalPin);
@@ -152,3 +163,4 @@ void loop( )
   delay(50);
   */
 }
+
