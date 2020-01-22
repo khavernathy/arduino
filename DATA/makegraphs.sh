@@ -84,7 +84,8 @@ while [ 1 ]; do
 	echo "------------------"
 	# HISTOGRAMS
 	cat air-temp_light_corr | awk {'print $2,$1'} > lt
-	#$python histograms.py HISTO2D_TL.png "log( light )" "temp (F)" lt
+	echo "  2D, temp+light.."
+	$python histograms.py HISTO2D_TL.png "log( light )" "temp (F)" lt
 	echo "	temperatures.."
 	$python histograms.py  HISTO_T.png  "Temperature (F)" "count"  waterproof thermistor
 	echo "	light.."
