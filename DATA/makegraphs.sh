@@ -39,9 +39,21 @@ while [ 1 ]; do
 	for x in ./LIGHT_*.dat; do
 		cat "$x" >> light
 	done
-	$python timegraph.py T.png     "date" "temp (F)"      waterproof thermistor
-	$python timegraph.py LIGHT.png "date" "LIGHT"         light
-#	$python timegraph.py RH.png    "date" "Rel Hum %"     RH_*.dat
+	if [ "$#" -eq 1 ]; then   # only the last $1 lines
+		tail -$1 thermistor > tmp; mv tmp thermistor
+		tail -$1 waterproof > tmp; mv tmp waterproof
+		tail -$1 light > tmp;      mv tmp light
+	fi
+	echo "Making time graphs."
+	echo "------------------"
+	echo "	temperatures.."
+	wp_current=$(tail -1 waterproof | awk {'print $2'})
+	th_current=$(tail -1 thermistor | awk {'print $2'})
+	title="Waterproof: $wp_current F; Thermistor: $th_current F"
+	$python timegraph.py T.png     "$title" "date" "temp (°F)"      waterproof thermistor
+	echo "	light.."
+	title="Light: "$(tail -1 light | awk {'print $2'})
+	$python timegraph.py LIGHT.png "$title" "date" "LIGHT"         light
 
 	# CORRELATIONS
 	[ -f thermistor ] && rm thermistor;
@@ -57,30 +69,29 @@ while [ 1 ]; do
 	[ -f light ] && rm light;
 	touch light;
 	for x in ./LIGHT_*; do
-		cat "$x" | awk {'print log($2)'} >> light
+		cat "$x" | awk {'if ($2 == 0) { print $2; } else { print log($2); }'} >> light
 	done
-#	[ -f h ] && rm h;
-#	touch h;
-#	for x in ./RH_*; do
-#		cat "$x" | awk {'print $2'} >> h
-#	done
-
+	
+	echo "";
+	echo "Making correlation graphs."
+	echo "------------------"
+	echo "	temp + log(light).."
 	paste thermistor light > air-temp_light_corr;
-#	paste t h > th;
-#	paste l h > lh;
 	$python correlations.py TL.png "temp (F)" "log( light )" air-temp_light_corr
-#	$python correlations.py TH.png "temp (F)" "Rel Hum %" th
-#	$python correlations.py LH.png "LIGHT" "Rel Hum %" lh
 
+	echo ""
+	echo "Making histogram graphs."
+	echo "------------------"
 	# HISTOGRAMS
 	cat air-temp_light_corr | awk {'print $2,$1'} > lt
-	$python histograms.py HISTO2D_TL.png "log( light )" "temp (F)" lt
-#	$python histograms.py HISTO2D_TH.png "temp (F)" "Rel Hum %" th
-#	$python histograms.py HISTO2D_LH.png "LIGHT" "Rel Hum %" lh
+	#$python histograms.py HISTO2D_TL.png "log( light )" "temp (F)" lt
+	echo "	temperatures.."
 	$python histograms.py  HISTO_T.png  "Temperature (F)" "count"  waterproof thermistor
-	$python histograms.py  HISTO_LIGHT.png "log( light )" "log10( count )" light
-#	$python histograms.py HISTO_RH.png "RH" "count" h
+	echo "	light.."
+	$python histograms.py  HISTO_LIGHT.png "log( light )" "count" light
 
-	rm lt light thermistor waterproof  air-temp_light_corr
-	sleep 60;
+	rm lt light    air-temp_light_corr thermistor waterproof
+	echo ""
+	echo "Done. waiting for a min."
+	sleep 300;
 done

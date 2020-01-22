@@ -75,7 +75,7 @@ for i in np.arange(4,n,1):
 #    print( " " );
 #    print(second)
 #    print(len(first), len(second))
-        plt.plot( second,first, label=sys.argv[i] )
+        plt.plot( second, first, label=sys.argv[i] )
 
 plt.legend(loc="upper left")
 plt.xlabel( xlab )
