@@ -17,7 +17,7 @@ while [ 1 ]; do
         cat "$x" | awk {'print $1, $3'} > DATA/RH_$c.dat
         cat "$x" | awk {'print $1, $4'} > DATA/LIGHT_$c.dat
         cat "$x" | awk {'print $1, $5'} > DATA/T2_$c.dat
-        cat "$x" | awk {'print $1, $6'} > DATA/T3_$c.dat
+        cat "$x" | awk {'print $1, $6'} | grep -v "\\-196\.60" > DATA/T3_$c.dat
         let c=$c+1
     done
 
