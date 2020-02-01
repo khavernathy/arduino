@@ -14,11 +14,12 @@ while [ 1 ]; do
 
     c=0
     for x in ./output_*; do
+        cat "$x" | grep -v "2371948377" > a; mv a "$x"  # remove extraneous timepoint
         cat "$x" | awk {'print $1, $2'} > DATA/T1_$c.dat
         cat "$x" | awk {'print $1, $3'} > DATA/RH_$c.dat
         cat "$x" | awk {'print $1, $4'} > DATA/LIGHT_$c.dat
         cat "$x" | awk {'print $1, $5'} > DATA/T2_$c.dat
-        cat "$x" | awk {'print $1, $6'} | grep -v "\\-196\.60" > DATA/T3_$c.dat
+        cat "$x" | awk {'print $1, $6'} | grep -v "\\-196\.60" > DATA/T3_$c.dat # remove extraneous temp point
         let c=$c+1
     done
 
