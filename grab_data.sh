@@ -9,6 +9,7 @@
 
 while [ 1 ]; do
 
+    echo "pulling from arduino link sci laptop"
     scp sci:~/arduino/output_* .
 
     c=0
@@ -24,7 +25,9 @@ while [ 1 ]; do
     # to convert timestamp -> UTC -> EST
     #python -c "stmp=1577035548; import datetime;  print( datetime.datetime.utcfromtimestamp( stmp + 3600 ).strftime('%d %b %Y %H:%M:%S') );"
 
+    echo "pushing to website"
     scp DATA/*dat web:/var/www/html/arduino/DATA
 
-    sleep 60;
+    echo "Done at $(date). Waiting 10min"
+    sleep 600;
 done
